@@ -1,5 +1,13 @@
 #pragma once
 
+#include "DataManager.h"
+
+enum SearchStatus {
+	S_Nothing = 0,
+	S_Book = 1,
+	S_Subject = 2
+};
+
 namespace MumladzeLab5 {
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -13,6 +21,10 @@ namespace MumladzeLab5 {
 	
 	public: MyForm(void);
 	protected: ~MyForm();
+
+	private: LinkManager^ lm;
+		     BookManager^ bm;
+		     SubjectManager^ sm;
 
 	private: System::Windows::Forms::Button^ ButtonSearchBook;
 	private: System::Windows::Forms::Button^ ButtonSearchSubject;
@@ -65,6 +77,7 @@ namespace MumladzeLab5 {
 			this->TextBoxSearch->Size = System::Drawing::Size(240, 20);
 			this->TextBoxSearch->TabIndex = 2;
 			this->TextBoxSearch->Text = L"Поиск";
+			this->TextBoxSearch->Enabled = false;
 			this->TextBoxSearch->TextChanged += gcnew System::EventHandler(this, &MyForm::TextBoxSearch_TextChanged);
 			// 
 			// ButtonSearchStart
@@ -75,6 +88,7 @@ namespace MumladzeLab5 {
 			this->ButtonSearchStart->TabIndex = 3;
 			this->ButtonSearchStart->Text = L"Поиск";
 			this->ButtonSearchStart->UseVisualStyleBackColor = true;
+			this->ButtonSearchStart->Enabled = false;
 			this->ButtonSearchStart->Click += gcnew System::EventHandler(this, &MyForm::ButtonSearchStart_Click);
 			// 
 			// ListViewData1
@@ -101,6 +115,7 @@ namespace MumladzeLab5 {
 		}
 #pragma endregion
 	private: bool IsChangeSearchButtonClicked = false;
+		     SearchStatus searchStatus = S_Nothing;
 
 	private: Void ButtonSearchBook_Click(Object^ sender, EventArgs^ e);
 	private: Void ButtonSearchSubject_Click(Object^ sender, EventArgs^ e);

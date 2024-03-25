@@ -1,3 +1,5 @@
+#pragma once
+
 using namespace System;
 using namespace System::IO;
 using namespace System::Collections;
@@ -25,7 +27,7 @@ ref struct Subject {
 
 //  ласс, управл€ющий информацией о св€з€х {книга, дисциплина}
 ref class LinkManager {
-private:
+public:
 	// »м€ файла с данными о св€з€х
 	String^ fileName;
 	// —писок св€зей {книга, дисциплина}
@@ -53,7 +55,7 @@ public:
 
 //  ласс, управл€ющий информацией о книгах
 ref class BookManager {
-private:
+public:
 	// »м€ файла с данными о книгах
 	String^ fileName;
 	// —писок книг
@@ -77,7 +79,7 @@ public:
 
 //  ласс, управл€ющий информацией о дисциплинах
 ref class SubjectManager {
-private:
+public:
 	// »м€ файла с данными о книгах
 	String^ fileName;
 	// —писок дисциплин
