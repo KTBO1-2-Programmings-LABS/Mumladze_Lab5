@@ -1,7 +1,6 @@
 #pragma once
 
 namespace MumladzeLab5 {
-
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -9,41 +8,22 @@ namespace MumladzeLab5 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	/// <summary>
-	/// Сводка для MyForm
-	/// </summary>
-	public ref class MyForm : public System::Windows::Forms::Form
-	{
-	public:
-		MyForm(void)
-		{
-			InitializeComponent();
-			//
-			//TODO: добавьте код конструктора
-			//
-		}
 
-	protected:
-		/// <summary>
-		/// Освободить все используемые ресурсы.
-		/// </summary>
-		~MyForm()
-		{
-			if (components)
-			{
-				delete components;
-			}
-		}
+	public ref class MyForm : public System::Windows::Forms::Form {
+	
+	public: MyForm(void);
+	protected: ~MyForm();
+
 	private: System::Windows::Forms::Button^ ButtonSearchBook;
 	private: System::Windows::Forms::Button^ ButtonSearchSubject;
 	private: System::Windows::Forms::TextBox^ TextBoxSearch;
-	protected:
+	private: System::Windows::Forms::Button^ ButtonSearchStart;
+	private: System::Windows::Forms::ListView^ ListViewData1;
 
-	private:
-		/// <summary>
-		/// Обязательная переменная конструктора.
-		/// </summary>
-		System::ComponentModel::Container ^components;
+	/// <summary>
+	/// Обязательная переменная конструктора.
+	/// </summary>
+	private: System::ComponentModel::Container ^components;
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -54,13 +34,15 @@ namespace MumladzeLab5 {
 			this->ButtonSearchBook = (gcnew System::Windows::Forms::Button());
 			this->ButtonSearchSubject = (gcnew System::Windows::Forms::Button());
 			this->TextBoxSearch = (gcnew System::Windows::Forms::TextBox());
+			this->ButtonSearchStart = (gcnew System::Windows::Forms::Button());
+			this->ListViewData1 = (gcnew System::Windows::Forms::ListView());
 			this->SuspendLayout();
 			// 
 			// ButtonSearchBook
 			// 
 			this->ButtonSearchBook->Location = System::Drawing::Point(40, 20);
 			this->ButtonSearchBook->Name = L"ButtonSearchBook";
-			this->ButtonSearchBook->Size = System::Drawing::Size(120, 45);
+			this->ButtonSearchBook->Size = System::Drawing::Size(150, 45);
 			this->ButtonSearchBook->TabIndex = 0;
 			this->ButtonSearchBook->Text = L"Книги";
 			this->ButtonSearchBook->UseVisualStyleBackColor = true;
@@ -68,9 +50,9 @@ namespace MumladzeLab5 {
 			// 
 			// ButtonSearchSubject
 			// 
-			this->ButtonSearchSubject->Location = System::Drawing::Point(200, 20);
+			this->ButtonSearchSubject->Location = System::Drawing::Point(230, 20);
 			this->ButtonSearchSubject->Name = L"ButtonSearchSubject";
-			this->ButtonSearchSubject->Size = System::Drawing::Size(120, 45);
+			this->ButtonSearchSubject->Size = System::Drawing::Size(150, 45);
 			this->ButtonSearchSubject->TabIndex = 1;
 			this->ButtonSearchSubject->Text = L"Дисциплины";
 			this->ButtonSearchSubject->UseVisualStyleBackColor = true;
@@ -80,14 +62,35 @@ namespace MumladzeLab5 {
 			// 
 			this->TextBoxSearch->Location = System::Drawing::Point(40, 90);
 			this->TextBoxSearch->Name = L"TextBoxSearch";
-			this->TextBoxSearch->Size = System::Drawing::Size(280, 22);
+			this->TextBoxSearch->Size = System::Drawing::Size(240, 20);
 			this->TextBoxSearch->TabIndex = 2;
 			this->TextBoxSearch->Text = L"Поиск";
 			this->TextBoxSearch->TextChanged += gcnew System::EventHandler(this, &MyForm::TextBoxSearch_TextChanged);
 			// 
+			// ButtonSearchStart
+			// 
+			this->ButtonSearchStart->Location = System::Drawing::Point(300, 80);
+			this->ButtonSearchStart->Name = L"ButtonSearchStart";
+			this->ButtonSearchStart->Size = System::Drawing::Size(75, 40);
+			this->ButtonSearchStart->TabIndex = 3;
+			this->ButtonSearchStart->Text = L"Поиск";
+			this->ButtonSearchStart->UseVisualStyleBackColor = true;
+			this->ButtonSearchStart->Click += gcnew System::EventHandler(this, &MyForm::ButtonSearchStart_Click);
+			// 
+			// ListViewData1
+			// 
+			this->ListViewData1->HideSelection = false;
+			this->ListViewData1->Location = System::Drawing::Point(40, 135);
+			this->ListViewData1->Name = L"ListViewData1";
+			this->ListViewData1->Size = System::Drawing::Size(330, 250);
+			this->ListViewData1->TabIndex = 4;
+			this->ListViewData1->UseCompatibleStateImageBehavior = false;
+			// 
 			// MyForm
 			// 
 			this->ClientSize = System::Drawing::Size(900, 400);
+			this->Controls->Add(this->ListViewData1);
+			this->Controls->Add(this->ButtonSearchStart);
 			this->Controls->Add(this->TextBoxSearch);
 			this->Controls->Add(this->ButtonSearchSubject);
 			this->Controls->Add(this->ButtonSearchBook);
@@ -95,36 +98,14 @@ namespace MumladzeLab5 {
 			this->Text = L"Библиотечная картотека";
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 #pragma endregion
 	private: bool IsChangeSearchButtonClicked = false;
 
-	private: Void ButtonSearchBook_Click(Object^ sender, EventArgs^ e) {
-		IsChangeSearchButtonClicked = true;
-		TextBoxSearch->Enabled = true;
-		TextBoxSearch->Text = L"Введите название книги";
-		ButtonSearchBook->FlatStyle = FlatStyle::Popup;
-		ButtonSearchSubject->FlatStyle = FlatStyle::Standard;
-	}
-	private: Void ButtonSearchSubject_Click(Object^ sender, EventArgs^ e) {
-		IsChangeSearchButtonClicked = true;
-		TextBoxSearch->Enabled = true;
-		TextBoxSearch->Text = L"Введите название дисциплины";
-		ButtonSearchBook->FlatStyle = FlatStyle::Standard;
-		ButtonSearchSubject->FlatStyle = FlatStyle::Popup;
-	}
-	private: Void TextBoxSearch_TextChanged(Object^ sender, EventArgs^ e) {
-		String^ text = TextBoxSearch->Text;
-		if (IsChangeSearchButtonClicked) {
-			IsChangeSearchButtonClicked = false;
-		}
-		else if (text->StartsWith("Введите название книги") || text->StartsWith("Введите название дисциплины")) {
-			text = text->Substring(text->Length - 1);
-			TextBoxSearch->Text = text;
-			TextBoxSearch->Select(TextBoxSearch->Text->Length, 1);
-		}
-	}
+	private: Void ButtonSearchBook_Click(Object^ sender, EventArgs^ e);
+	private: Void ButtonSearchSubject_Click(Object^ sender, EventArgs^ e);
+	private: Void TextBoxSearch_TextChanged(Object^ sender, EventArgs^ e);
+	private: Void ButtonSearchStart_Click(System::Object^ sender, System::EventArgs^ e);
 
 };
 }
