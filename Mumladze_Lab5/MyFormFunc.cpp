@@ -14,6 +14,12 @@ MyForm::~MyForm() {
 	if (components) {
 		delete components;
 	}
+	this->lm->WriteLinkListToFile();
+	this->bm->WriteBookListToFile();
+	this->sm->WriteSubjectListToFile();
+	delete this->lm;
+	delete this->bm;
+	delete this->sm;
 }
 
 Void MyForm::initializationData() {
@@ -125,11 +131,15 @@ Void MyForm::buttonAddNode_Click(System::Object^ sender, System::EventArgs^ e) {
 		}
 		else {
 			MessageBox::Show("Ошибка - не выбрана категория записи", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
 		}
 		item->Text = text1;
 		item->SubItems->Add(text2);
 		item->SubItems->Add(text3);
 		listViewData1->Items->Add(item);
+		textBoxInputData1->Text = "";
+		textBoxInputData2->Text = "";
+		textBoxInputData3->Text = "";
 	}
 	else {
 		MessageBox::Show("Ошибка. Вы ввели не все данные, необходимые для записи в список.",

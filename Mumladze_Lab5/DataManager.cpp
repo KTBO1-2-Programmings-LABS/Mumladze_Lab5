@@ -18,7 +18,7 @@ void LinkManager::ReadLinkListFromFile(void) {
 void LinkManager::WriteLinkListToFile(void) {
     StreamWriter^ sw = File::CreateText(this->fileName);
     for each (Link^ link in (this->links)) {
-        String^ text = String::Format("{0}, {1}", link->ISBN, link->dis_code);
+        String^ text = String::Format("{0}; {1}", link->ISBN, link->dis_code);
         sw->WriteLine(text);
     }
     sw->Close();
@@ -95,7 +95,7 @@ void BookManager::ReadBookListFromFile(void) {
 void BookManager::WriteBookListToFile(void) {
     StreamWriter^ sw = File::CreateText(this->fileName);
     for each (Book^ book in (this->books)) {
-        String^ text = String::Format("{0}, {1}, {2}", book->ISBN, book->title, book->author);
+        String^ text = String::Format("{0}; {1}; {2}", book->ISBN, book->title, book->author);
         sw->WriteLine(text);
     }
     sw->Close();
@@ -147,7 +147,7 @@ void SubjectManager::ReadSubjectListFromFile(void) {
 void SubjectManager::WriteSubjectListToFile(void) {
     StreamWriter^ sw = File::CreateText(this->fileName);
     for each (Subject^ subject in (this->subjects)) {
-        String^ text = String::Format("{0}, {1}, {2}", subject->dis_code, subject->name, subject->description);
+        String^ text = String::Format("{0}; {1}; {2}", subject->dis_code, subject->name, subject->description);
         sw->WriteLine(text);
     }
     sw->Close();
