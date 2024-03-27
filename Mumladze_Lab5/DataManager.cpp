@@ -17,14 +17,11 @@ void LinkManager::ReadLinkListFromFile(void) {
 }
 void LinkManager::WriteLinkListToFile(void) {
     StreamWriter^ sw = File::CreateText(this->fileName);
-    try {
-        for each (Link ^ link in (this->links)) {
-            sw->WriteLine("{0}, {1}", link->ISBN, link->dis_code);
-        }
+    for each (Link^ link in (this->links)) {
+        String^ text = String::Format("{0}, {1}", link->ISBN, link->dis_code);
+        sw->WriteLine(text);
     }
-    finally {
-        if (sw != nullptr) sw->Close();
-    }
+    sw->Close();
 }
 void LinkManager::AddLinkToList(String^ line) {
     array<String^>^ linkData = line->Split(';');
@@ -97,14 +94,11 @@ void BookManager::ReadBookListFromFile(void) {
 }
 void BookManager::WriteBookListToFile(void) {
     StreamWriter^ sw = File::CreateText(this->fileName);
-    try {
-        for each (Book^ book in (this->books)) {
-            sw->WriteLine("{0}, {1}, {2}", book->ISBN, book->title, book->author);
-        }
+    for each (Book^ book in (this->books)) {
+        String^ text = String::Format("{0}, {1}, {2}", book->ISBN, book->title, book->author);
+        sw->WriteLine(text);
     }
-    finally {
-        if (sw != nullptr) sw->Close();
-    }
+    sw->Close();
 }
 void BookManager::AddBookToList(String^ line) {
     array<String^>^ bookData = line->Split(';');
@@ -152,14 +146,11 @@ void SubjectManager::ReadSubjectListFromFile(void) {
 }
 void SubjectManager::WriteSubjectListToFile(void) {
     StreamWriter^ sw = File::CreateText(this->fileName);
-    try {
-        for each (Subject^ subject in (this->subjects)) {
-            sw->WriteLine("{0}, {1}, {2}", subject->dis_code, subject->name, subject->description);
-        }
+    for each (Subject^ subject in (this->subjects)) {
+        String^ text = String::Format("{0}, {1}, {2}", subject->dis_code, subject->name, subject->description);
+        sw->WriteLine(text);
     }
-    finally {
-        if (sw != nullptr) sw->Close();
-    }
+    sw->Close();
 }
 void SubjectManager::AddSubjectToList(String^ line) {
     array<String^>^ subjectData = line->Split(';');

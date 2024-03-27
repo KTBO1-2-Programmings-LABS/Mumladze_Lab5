@@ -26,15 +26,23 @@ namespace MumladzeLab5 {
 		     BookManager^ bm;
 		     SubjectManager^ sm;
 
-	private: System::Windows::Forms::Button^ ButtonSearchBook;
-	private: System::Windows::Forms::Button^ ButtonSearchSubject;
-	private: System::Windows::Forms::TextBox^ TextBoxSearch;
-	private: System::Windows::Forms::Button^ ButtonSearchStart;
-	private: System::Windows::Forms::ListView^ ListViewData1;
+	private: System::Windows::Forms::Button^ buttonSearchBook;
+	private: System::Windows::Forms::Button^ buttonSearchSubject;
+	private: System::Windows::Forms::TextBox^ textBoxSearch;
+	private: System::Windows::Forms::Button^ buttonSearchStart;
+	private: System::Windows::Forms::ListView^ listViewData1;
 	private: System::Windows::Forms::ColumnHeader^ columnHeader1;
 	private: System::Windows::Forms::ColumnHeader^ columnHeader2;
 	private: System::Windows::Forms::ColumnHeader^ columnHeader3;
-
+	private: System::Windows::Forms::Label^ labelSearch;
+	private: System::Windows::Forms::TextBox^ textBoxInputData1;
+	private: System::Windows::Forms::Label^ labelInputData1;
+	private: System::Windows::Forms::TextBox^ textBoxInputData2;
+	private: System::Windows::Forms::Label^ labelInputData2;
+	private: System::Windows::Forms::TextBox^ textBoxInputData3;
+	private: System::Windows::Forms::Label^ labelInputData3;
+	private: System::Windows::Forms::Button^ buttonRemoveNode;
+	private: System::Windows::Forms::Button^ buttonAddNode;
 
 
 
@@ -49,70 +57,77 @@ namespace MumladzeLab5 {
 		/// содержимое этого метода с помощью редактора кода.
 		/// </summary>
 		void InitializeComponent(void) {
-			this->ButtonSearchBook = (gcnew System::Windows::Forms::Button());
-			this->ButtonSearchSubject = (gcnew System::Windows::Forms::Button());
-			this->TextBoxSearch = (gcnew System::Windows::Forms::TextBox());
-			this->ButtonSearchStart = (gcnew System::Windows::Forms::Button());
-			this->ListViewData1 = (gcnew System::Windows::Forms::ListView());
+			this->buttonSearchBook = (gcnew System::Windows::Forms::Button());
+			this->buttonSearchSubject = (gcnew System::Windows::Forms::Button());
+			this->textBoxSearch = (gcnew System::Windows::Forms::TextBox());
+			this->buttonSearchStart = (gcnew System::Windows::Forms::Button());
+			this->listViewData1 = (gcnew System::Windows::Forms::ListView());
 			this->columnHeader1 = (gcnew System::Windows::Forms::ColumnHeader());
 			this->columnHeader2 = (gcnew System::Windows::Forms::ColumnHeader());
 			this->columnHeader3 = (gcnew System::Windows::Forms::ColumnHeader());
+			this->labelSearch = (gcnew System::Windows::Forms::Label());
+			this->textBoxInputData1 = (gcnew System::Windows::Forms::TextBox());
+			this->labelInputData1 = (gcnew System::Windows::Forms::Label());
+			this->textBoxInputData2 = (gcnew System::Windows::Forms::TextBox());
+			this->labelInputData2 = (gcnew System::Windows::Forms::Label());
+			this->textBoxInputData3 = (gcnew System::Windows::Forms::TextBox());
+			this->labelInputData3 = (gcnew System::Windows::Forms::Label());
+			this->buttonRemoveNode = (gcnew System::Windows::Forms::Button());
+			this->buttonAddNode = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
-			// ButtonSearchBook
+			// buttonSearchBook
 			// 
-			this->ButtonSearchBook->Location = System::Drawing::Point(75, 20);
-			this->ButtonSearchBook->Name = L"ButtonSearchBook";
-			this->ButtonSearchBook->Size = System::Drawing::Size(150, 45);
-			this->ButtonSearchBook->TabIndex = 0;
-			this->ButtonSearchBook->Text = L"Книги";
-			this->ButtonSearchBook->UseVisualStyleBackColor = true;
-			this->ButtonSearchBook->Click += gcnew System::EventHandler(this, &MyForm::ButtonSearchBook_Click);
+			this->buttonSearchBook->Location = System::Drawing::Point(40, 20);
+			this->buttonSearchBook->Name = L"buttonSearchBook";
+			this->buttonSearchBook->Size = System::Drawing::Size(120, 45);
+			this->buttonSearchBook->TabIndex = 0;
+			this->buttonSearchBook->Text = L"Книги";
+			this->buttonSearchBook->UseVisualStyleBackColor = true;
+			this->buttonSearchBook->Click += gcnew System::EventHandler(this, &MyForm::buttonSearchBook_Click);
 			// 
-			// ButtonSearchSubject
+			// buttonSearchSubject
 			// 
-			this->ButtonSearchSubject->Location = System::Drawing::Point(300, 20);
-			this->ButtonSearchSubject->Name = L"ButtonSearchSubject";
-			this->ButtonSearchSubject->Size = System::Drawing::Size(150, 45);
-			this->ButtonSearchSubject->TabIndex = 1;
-			this->ButtonSearchSubject->Text = L"Дисциплины";
-			this->ButtonSearchSubject->UseVisualStyleBackColor = true;
-			this->ButtonSearchSubject->Click += gcnew System::EventHandler(this, &MyForm::ButtonSearchSubject_Click);
+			this->buttonSearchSubject->Location = System::Drawing::Point(170, 20);
+			this->buttonSearchSubject->Name = L"buttonSearchSubject";
+			this->buttonSearchSubject->Size = System::Drawing::Size(120, 45);
+			this->buttonSearchSubject->TabIndex = 1;
+			this->buttonSearchSubject->Text = L"Дисциплины";
+			this->buttonSearchSubject->UseVisualStyleBackColor = true;
+			this->buttonSearchSubject->Click += gcnew System::EventHandler(this, &MyForm::buttonSearchSubject_Click);
 			// 
-			// TextBoxSearch
+			// textBoxSearch
 			// 
-			this->TextBoxSearch->Enabled = false;
-			this->TextBoxSearch->Location = System::Drawing::Point(40, 90);
-			this->TextBoxSearch->Name = L"TextBoxSearch";
-			this->TextBoxSearch->Size = System::Drawing::Size(360, 25);
-			this->TextBoxSearch->TabIndex = 2;
-			this->TextBoxSearch->Text = L"Поиск";
-			this->TextBoxSearch->TextChanged += gcnew System::EventHandler(this, &MyForm::TextBoxSearch_TextChanged);
+			this->textBoxSearch->Enabled = false;
+			this->textBoxSearch->Location = System::Drawing::Point(40, 80);
+			this->textBoxSearch->Name = L"textBoxSearch";
+			this->textBoxSearch->Size = System::Drawing::Size(450, 22);
+			this->textBoxSearch->TabIndex = 2;
 			// 
-			// ButtonSearchStart
+			// buttonSearchStart
 			// 
-			this->ButtonSearchStart->Enabled = false;
-			this->ButtonSearchStart->Location = System::Drawing::Point(415, 81);
-			this->ButtonSearchStart->Name = L"ButtonSearchStart";
-			this->ButtonSearchStart->Size = System::Drawing::Size(75, 40);
-			this->ButtonSearchStart->TabIndex = 3;
-			this->ButtonSearchStart->Text = L"Поиск";
-			this->ButtonSearchStart->UseVisualStyleBackColor = true;
-			this->ButtonSearchStart->Click += gcnew System::EventHandler(this, &MyForm::ButtonSearchStart_Click);
+			this->buttonSearchStart->Enabled = false;
+			this->buttonSearchStart->Location = System::Drawing::Point(370, 20);
+			this->buttonSearchStart->Name = L"buttonSearchStart";
+			this->buttonSearchStart->Size = System::Drawing::Size(120, 45);
+			this->buttonSearchStart->TabIndex = 3;
+			this->buttonSearchStart->Text = L"Поиск";
+			this->buttonSearchStart->UseVisualStyleBackColor = true;
+			this->buttonSearchStart->Click += gcnew System::EventHandler(this, &MyForm::buttonSearchStart_Click);
 			// 
-			// ListViewData1
+			// listViewData1
 			// 
-			this->ListViewData1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(3) {
-				this->columnHeader1,
-					this->columnHeader2, this->columnHeader3
+			this->listViewData1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::ColumnHeader^  >(3) {
+				this->columnHeader1, this->columnHeader2, this->columnHeader3
 			});
-			this->ListViewData1->HideSelection = false;
-			this->ListViewData1->Location = System::Drawing::Point(40, 135);
-			this->ListViewData1->Name = L"ListViewData1";
-			this->ListViewData1->Size = System::Drawing::Size(450, 250);
-			this->ListViewData1->TabIndex = 4;
-			this->ListViewData1->UseCompatibleStateImageBehavior = false;
-			this->ListViewData1->View = System::Windows::Forms::View::Details;
+			this->listViewData1->HideSelection = false;
+			this->listViewData1->Location = System::Drawing::Point(40, 135);
+			this->listViewData1->Name = L"listViewData1";
+			this->listViewData1->Size = System::Drawing::Size(450, 250);
+			this->listViewData1->TabIndex = 4;
+			this->listViewData1->UseCompatibleStateImageBehavior = false;
+			this->listViewData1->View = System::Windows::Forms::View::Details;
+			this->listViewData1->ItemSelectionChanged += gcnew System::Windows::Forms::ListViewItemSelectionChangedEventHandler(this, &MyForm::listViewData1_ItemSelectionChanged);
 			// 
 			// columnHeader1
 			// 
@@ -129,14 +144,101 @@ namespace MumladzeLab5 {
 			this->columnHeader3->Text = L"Поле 3";
 			this->columnHeader3->Width = 148;
 			// 
+			// labelSearch
+			// 
+			this->labelSearch->AutoSize = true;
+			this->labelSearch->Location = System::Drawing::Point(40, 104);
+			this->labelSearch->Name = L"labelSearch";
+			this->labelSearch->Size = System::Drawing::Size(47, 16);
+			this->labelSearch->TabIndex = 5;
+			this->labelSearch->Text = L"Поиск";
+			// 
+			// textBoxInputData1
+			// 
+			this->textBoxInputData1->Location = System::Drawing::Point(520, 135);
+			this->textBoxInputData1->Name = L"textBoxInputData1";
+			this->textBoxInputData1->Size = System::Drawing::Size(200, 22);
+			this->textBoxInputData1->TabIndex = 6;
+			// 
+			// labelInputData1
+			// 
+			this->labelInputData1->AutoSize = true;
+			this->labelInputData1->Location = System::Drawing::Point(520, 160);
+			this->labelInputData1->Name = L"labelInputData1";
+			this->labelInputData1->Size = System::Drawing::Size(94, 16);
+			this->labelInputData1->TabIndex = 7;
+			this->labelInputData1->Text = L"Поле ввода 1";
+			// 
+			// textBoxInputData2
+			// 
+			this->textBoxInputData2->Location = System::Drawing::Point(520, 190);
+			this->textBoxInputData2->Name = L"textBoxInputData2";
+			this->textBoxInputData2->Size = System::Drawing::Size(200, 22);
+			this->textBoxInputData2->TabIndex = 8;
+			// 
+			// labelInputData2
+			// 
+			this->labelInputData2->AutoSize = true;
+			this->labelInputData2->Location = System::Drawing::Point(520, 215);
+			this->labelInputData2->Name = L"labelInputData2";
+			this->labelInputData2->Size = System::Drawing::Size(94, 16);
+			this->labelInputData2->TabIndex = 9;
+			this->labelInputData2->Text = L"Поле ввода 2";
+			// 
+			// textBoxInputData3
+			// 
+			this->textBoxInputData3->Location = System::Drawing::Point(520, 245);
+			this->textBoxInputData3->Name = L"textBoxInputData3";
+			this->textBoxInputData3->Size = System::Drawing::Size(200, 22);
+			this->textBoxInputData3->TabIndex = 10;
+			// 
+			// labelInputData3
+			// 
+			this->labelInputData3->AutoSize = true;
+			this->labelInputData3->Location = System::Drawing::Point(520, 275);
+			this->labelInputData3->Name = L"labelInputData3";
+			this->labelInputData3->Size = System::Drawing::Size(94, 16);
+			this->labelInputData3->TabIndex = 11;
+			this->labelInputData3->Text = L"Поле ввода 3";
+			// 
+			// buttonRemoveNode
+			// 
+			this->buttonRemoveNode->Location = System::Drawing::Point(520, 325);
+			this->buttonRemoveNode->Name = L"buttonRemoveNode";
+			this->buttonRemoveNode->Size = System::Drawing::Size(90, 40);
+			this->buttonRemoveNode->TabIndex = 12;
+			this->buttonRemoveNode->Text = L"Удалить";
+			this->buttonRemoveNode->UseVisualStyleBackColor = true;
+			this->buttonRemoveNode->Click += gcnew System::EventHandler(this, &MyForm::buttonRemoveNode_Click);
+			// 
+			// buttonAddNode
+			// 
+			this->buttonAddNode->Enabled = false;
+			this->buttonAddNode->Location = System::Drawing::Point(630, 325);
+			this->buttonAddNode->Name = L"buttonAddNode";
+			this->buttonAddNode->Size = System::Drawing::Size(90, 40);
+			this->buttonAddNode->TabIndex = 13;
+			this->buttonAddNode->Text = L"Записать";
+			this->buttonAddNode->UseVisualStyleBackColor = true;
+			this->buttonAddNode->Click += gcnew System::EventHandler(this, &MyForm::buttonAddNode_Click);
+			// 
 			// MyForm
 			// 
-			this->ClientSize = System::Drawing::Size(540, 400);
-			this->Controls->Add(this->ListViewData1);
-			this->Controls->Add(this->ButtonSearchStart);
-			this->Controls->Add(this->TextBoxSearch);
-			this->Controls->Add(this->ButtonSearchSubject);
-			this->Controls->Add(this->ButtonSearchBook);
+			this->ClientSize = System::Drawing::Size(750, 400);
+			this->Controls->Add(this->buttonAddNode);
+			this->Controls->Add(this->buttonRemoveNode);
+			this->Controls->Add(this->labelInputData3);
+			this->Controls->Add(this->textBoxInputData3);
+			this->Controls->Add(this->labelInputData2);
+			this->Controls->Add(this->textBoxInputData2);
+			this->Controls->Add(this->labelInputData1);
+			this->Controls->Add(this->textBoxInputData1);
+			this->Controls->Add(this->labelSearch);
+			this->Controls->Add(this->listViewData1);
+			this->Controls->Add(this->buttonSearchStart);
+			this->Controls->Add(this->textBoxSearch);
+			this->Controls->Add(this->buttonSearchSubject);
+			this->Controls->Add(this->buttonSearchBook);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Name = L"MyForm";
 			this->Text = L"Библиотечная картотека";
@@ -146,12 +248,16 @@ namespace MumladzeLab5 {
 		}
 #pragma endregion
 	private: bool IsChangeSearchButtonClicked = false;
+		     bool IsDataInitialized = false;
 		     SearchStatus searchStatus = S_Nothing;
 
-	private: Void ButtonSearchBook_Click(Object^ sender, EventArgs^ e);
-	private: Void ButtonSearchSubject_Click(Object^ sender, EventArgs^ e);
-	private: Void TextBoxSearch_TextChanged(Object^ sender, EventArgs^ e);
-	private: Void ButtonSearchStart_Click(System::Object^ sender, System::EventArgs^ e);
+	private: Void initializationData();
+	private: Void buttonSearchBook_Click(Object^ sender, EventArgs^ e);
+	private: Void buttonSearchSubject_Click(Object^ sender, EventArgs^ e);
+	private: Void buttonSearchStart_Click(Object^ sender, EventArgs^ e);
+	private: Void buttonRemoveNode_Click(Object^ sender, EventArgs^ e);
+	private: Void buttonAddNode_Click(Object^ sender, EventArgs^ e);
+	private: Void listViewData1_ItemSelectionChanged(Object^ sender, ListViewItemSelectionChangedEventArgs^ e);
 
 };
 }

@@ -33,4 +33,15 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\Books.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="Data\Links.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="Data\Subjects.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
