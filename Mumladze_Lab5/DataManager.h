@@ -5,6 +5,13 @@ using namespace System::IO;
 using namespace System::Collections;
 using namespace System::Collections::Generic;
 
+// Перечислений форматов данных (связь, книга, дисциплина)
+enum DataType {
+	T_LINK = 0,
+	T_BOOK = 1,
+	T_SUBJECT = 2
+};
+
 // Структура записи связи {книга, дисциплина}
 ref struct Link {
 	String^ ISBN;
@@ -25,78 +32,35 @@ ref struct Subject {
 	String^ description;
 };
 
-// Класс, управляющий информацией о связях {книга, дисциплина}
-ref class LinkManager {
-public:
-	// Имя файла с данными о связях
-	String^ fileName;
-	// Список связей {книга, дисциплина}
-	List<Object^>^ links;
-public:
-	// Конструктор класса
-	LinkManager();
-	// Чтение списка связей из файла
-	void ReadLinkListFromFile(void);
-	// Запись списка связей в файл
-	void WriteLinkListToFile(void);
-	// Добавить связь в список
-	void AddLinkToList(String^);
-	// Удалить связь по ISBN и dis_code
-	void RemoveLinkFromList(String^, String^);
-	// Удалить все связи по книге (через объект BookManager или напрямую)
-	void RemoveAllLinksByBook(String^);
-	// Удалить все связи по дисциплине (через объект SubjectManager или напрямую)
-	void RemoveAllLinksBySubject(String^);
-	// Найти связи по книге
-	List<Object^>^ FindSubjectsByBook(String^);
-	// Найти связи по дисциплине
-	List<Object^>^ FindBooksBySubject(String^);
-};
+// Класс, управляющий данными о книгах, дисциплинах и их связях
+ref class DataManager {
+private:
+	// Путь до файла Links.txt
+	String^ fileLinkPath;
+	// Путь до файла Books.txt
+	String^ fileBookPath;
+	// Путь до файла Subjects.txt
+	String^ fileSubjectPath;
+	// Список объектов Link
+	List<Object^>^ listLinks;
+	// Список объектов Book
+	List<Object^>^ listBooks;
+	// Список объектов Subject
+	List<Object^>^ listSubjects;
 
-// Класс, управляющий информацией о книгах
-ref class BookManager {
-public:
-	// Имя файла с данными о книгах
-	String^ fileName;
-	// Список книг
-	List<Object^>^ books;
-	// Указатель на объект класса LinkManager
-	LinkManager^ lm;
 public:
 	// Конструктор класса
-	BookManager(LinkManager^);
-	// Чтение списка книг из файла
-	void ReadBookListFromFile(void);
-	// Запись списка книг в файл
-	void WriteBookListToFile(void);
-	// Добавление книги в список (парсит ввод по запятой)
-	void AddBookToList(String^);
-	// Удаление книги из списка (по ISBN коду)
-	void RemoveBookFromList(String^);
-	// Получить ISBN код книги по ее названию
-	String^ FindISBNByName(String^);
-};
-
-// Класс, управляющий информацией о дисциплинах
-ref class SubjectManager {
-public:
-	// Имя файла с данными о книгах
-	String^ fileName;
-	// Список дисциплин
-	List<Object^>^ subjects;
-	// Указатель на объект класса LinkManager
-	LinkManager^ lm;
-public:
-	// Конструктор класса
-	SubjectManager(LinkManager^);
-	// Чтение списка дисциплин из файла
-	void ReadSubjectListFromFile(void);
-	// Запись списка в файл
-	void WriteSubjectListToFile(void);
-	// Добавление книги в список
-	void AddSubjectToList(String^);
-	// Удаление книги из списка (по коду дисциплины)
-	void RemoveSubjectFromList(String^);
-	// Получить код дисциплины по ее названию
-	String^ FindDisCodeByName(String^);
+	DataManager();
+	// Прочитать данные из файлов в списки
+	void ReadDataFiles();
+	// Записать данные из списков в файлы
+	void WriteDataFiles();
+	// Преобразовать строку данных в Object
+	Object^ MakeNode(DataType, String^);
+	// Добавить запись в список
+	void AddNode(DataType, Object^);
+	// Удалить запись из списка
+	void DeleteNode(DataType, Object^);
+	// Найти запись в списке
+	List<Object^>^ FindNodes(DataType, String^);
 };

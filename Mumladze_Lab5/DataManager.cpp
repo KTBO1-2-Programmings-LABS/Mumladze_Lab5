@@ -3,181 +3,230 @@
 using namespace System;
 using namespace System::IO;
 
-LinkManager::LinkManager() {
-    this->fileName = gcnew String("./Data/Links.txt");
-    this->links = gcnew List<Object^>();
+DataManager::DataManager() {
+    this->fileLinkPath = gcnew String("./Data/Links.txt");
+    this->fileBookPath = gcnew String("./Data/Books.txt");
+    this->fileSubjectPath = gcnew String("./Data/Subjects.txt");
+
+    this->listLinks = gcnew List<Object^>();
+    this->listBooks = gcnew List<Object^>();
+    this->listSubjects = gcnew List<Object^>();
+
+    Console::WriteLine("Создан объект класса DataManager");
 }
-void LinkManager::ReadLinkListFromFile(void) {
-    StreamReader^ sr = gcnew StreamReader(this->fileName);
-    String^ line;
-    while ((line = sr->ReadLine()) != nullptr) {
-        this->AddLinkToList(line);
+void DataManager::ReadDataFiles() {
+    try {
+        StreamReader^ sr = gcnew StreamReader(this->fileLinkPath);
+        String^ line;
+        while ((line = sr->ReadLine()) != nullptr) {
+            this->AddNode(T_LINK, this->MakeNode(T_LINK, line));
+        }
+        sr->Close();
+        Console::WriteLine("Прочитан файл Links.txt");
     }
-    sr->Close();
+    catch (Exception^ e) {
+        Console::WriteLine("Ошибка, невозможно прочитать Links.txt\n" + e);
+        Environment::Exit(1);
+    }
+    try {
+        StreamReader^ sr = gcnew StreamReader(this->fileBookPath);
+        String^ line;
+        while ((line = sr->ReadLine()) != nullptr) {
+            this->AddNode(T_BOOK, this->MakeNode(T_BOOK, line));
+        }
+        sr->Close();
+        Console::WriteLine("Прочитан файл Books.txt");
+    }
+    catch (Exception^ e) {
+        Console::WriteLine("Ошибка, невозможно прочитать Books.txt\n" + e);
+        Environment::Exit(1);
+    }
+    try {
+        StreamReader^ sr = gcnew StreamReader(this->fileSubjectPath);
+        String^ line;
+        while ((line = sr->ReadLine()) != nullptr) {
+            this->AddNode(T_SUBJECT, this->MakeNode(T_SUBJECT, line));
+        }
+        sr->Close();
+        Console::WriteLine("Прочитан файл Subjects.txt");
+    }
+    catch (Exception^ e) {
+        Console::WriteLine("Ошибка, невозможно прочитать Subjects.txt\n" + e);
+        Environment::Exit(1);
+    }
 }
-void LinkManager::WriteLinkListToFile(void) {
-    StreamWriter^ sw = File::CreateText(this->fileName);
-    for each (Link^ link in (this->links)) {
+void DataManager::WriteDataFiles() {
+    StreamWriter^ sw = nullptr;
+    sw = File::CreateText(this->fileLinkPath);
+    for each (Link^ link in (this->listLinks)) {
         String^ text = String::Format("{0}; {1}", link->ISBN, link->dis_code);
         sw->WriteLine(text);
     }
     sw->Close();
-}
-void LinkManager::AddLinkToList(String^ line) {
-    array<String^>^ linkData = line->Split(';');
-    if (linkData->Length == 2) {
-        Link^ temp = gcnew Link();
-        temp->ISBN = linkData[0]->Trim();
-        temp->dis_code = linkData[1]->Trim();
-        this->links->Add(temp);
-    }
-}
-void LinkManager::RemoveLinkFromList(String^ ISBN, String^ dis_code) {
-    for (int i = 0; i < this->links->Count; ++i) {
-        Link^ link = dynamic_cast <Link^> (this->links[i]);
-        if (link != nullptr && link->ISBN == ISBN && link->dis_code == dis_code) {
-            this->links->RemoveAt(i);
-            break;
-        }
-    }
-}
-void LinkManager::RemoveAllLinksByBook(String^ ISBN) {
-    for (int i = 0; i < this->links->Count; ++i) {
-        Link^ link = dynamic_cast <Link^> (this->links[i]);
-        if (link != nullptr && link->ISBN == ISBN) {
-            this->links->RemoveAt(i);
-        }
-    }
-}
-void LinkManager::RemoveAllLinksBySubject(String^ dis_code) {
-    for (int i = 0; i < this->links->Count; ++i) {
-        Link^ link = dynamic_cast <Link^> (this->links[i]);
-        if (link != nullptr && link->dis_code == dis_code) {
-            this->links->RemoveAt(i);
-        }
-    }
-}
-List<Object^>^ LinkManager::FindSubjectsByBook(String^ ISBN) {
-    List<Object^>^ subjects = gcnew List<Object^>();
-    for (int i = 0; i < this->links->Count; ++i) {
-        Link^ link = dynamic_cast <Link^> (this->links[i]);
-        if (link != nullptr && link->ISBN == ISBN) {
-            subjects->Add(link->dis_code);
-        }
-    }
-    return subjects;
-}
-List<Object^>^ LinkManager::FindBooksBySubject(String^ dis_code) {
-    List<Object^>^ books = gcnew List<Object^>();
-    for (int i = 0; i < this->links->Count; ++i) {
-        Link^ link = dynamic_cast <Link^> (this->links[i]);
-        if (link != nullptr && link->dis_code == dis_code) {
-            books->Add(link->dis_code);
-        }
-    }
-    return books;
-}
-
-
-BookManager::BookManager(LinkManager^ lm) {
-    this->fileName = gcnew String("./Data/Books.txt");
-    this->books = gcnew List<Object^>();
-    this->lm = lm;
-}
-void BookManager::ReadBookListFromFile(void) {
-    StreamReader^ sr = gcnew StreamReader(this->fileName);
-    String^ line;
-    while ((line = sr->ReadLine()) != nullptr) {
-        this->AddBookToList(line);
-    }
-    sr->Close();
-}
-void BookManager::WriteBookListToFile(void) {
-    StreamWriter^ sw = File::CreateText(this->fileName);
-    for each (Book^ book in (this->books)) {
+    Console::WriteLine("Файл Links.txt обновлен новыми данными");
+    sw = File::CreateText(this->fileBookPath);
+    for each (Book ^ book in (this->listBooks)) {
         String^ text = String::Format("{0}; {1}; {2}", book->ISBN, book->title, book->author);
         sw->WriteLine(text);
     }
     sw->Close();
-}
-void BookManager::AddBookToList(String^ line) {
-    array<String^>^ bookData = line->Split(';');
-    if (bookData->Length == 3) {
-        Book^ temp = gcnew Book();
-        temp->ISBN = bookData[0]->Trim();
-        temp->title = bookData[1]->Trim();
-        temp->author = bookData[2]->Trim();
-        this->books->Add(temp);
-    }
-}
-void BookManager::RemoveBookFromList(String^ ISBN) {
-    for (int i = 0; i < this->books->Count; ++i) {
-        Book^ book = dynamic_cast <Book^> (this->books[i]);
-        if (book != nullptr && book->ISBN == ISBN) {
-            lm->RemoveAllLinksByBook(ISBN);
-            this->books->RemoveAt(i);
-            break; 
-        }
-    }
-}
-String^ BookManager::FindISBNByName(String^ title) {
-    for (int i = 0; i < this->books->Count; i++) {
-        Book^ book = dynamic_cast <Book^> (this->books[i]);
-        if (book != nullptr && book->title == title) {
-            return book->ISBN;
-        }
-    }
-    return nullptr;
-}
-
-
-SubjectManager::SubjectManager(LinkManager^ lm) {
-    this->fileName = gcnew String("./Data/Subjects.txt");
-    this->subjects = gcnew List<Object^>();
-    this->lm = lm;
-}
-void SubjectManager::ReadSubjectListFromFile(void) {
-    StreamReader^ sr = gcnew StreamReader(this->fileName);
-    String^ line;
-    while ((line = sr->ReadLine()) != nullptr) {
-        this->AddSubjectToList(line);
-    }
-    sr->Close();
-}
-void SubjectManager::WriteSubjectListToFile(void) {
-    StreamWriter^ sw = File::CreateText(this->fileName);
-    for each (Subject^ subject in (this->subjects)) {
+    Console::WriteLine("Файл Books.txt обновлен новыми данными");
+    sw = File::CreateText(this->fileSubjectPath);
+    for each (Subject ^ subject in (this->listSubjects)) {
         String^ text = String::Format("{0}; {1}; {2}", subject->dis_code, subject->name, subject->description);
         sw->WriteLine(text);
     }
     sw->Close();
+    Console::WriteLine("Файл Books.txt обновлен новыми данными");
 }
-void SubjectManager::AddSubjectToList(String^ line) {
-    array<String^>^ subjectData = line->Split(';');
-    if (subjectData->Length == 3) {
-        Subject^ temp = gcnew Subject();
-        temp->dis_code = subjectData[0]->Trim();
-        temp->name = subjectData[1]->Trim();
-        temp->description = subjectData[2]->Trim();
-        this->subjects->Add(temp);
-    }
-}
-void SubjectManager::RemoveSubjectFromList(String^ dis_code) {
-    for (int i = 0; i < this->subjects->Count; ++i) {
-        Subject^ subject = dynamic_cast <Subject^> (this->subjects[i]);
-        if (subject != nullptr && subject->dis_code == dis_code) {
-            lm->RemoveAllLinksBySubject(dis_code);
-            this->subjects->RemoveAt(i);
-            break;
+Object^ DataManager::MakeNode(DataType type, String^ line) {
+    Object^ node = nullptr;
+    array<String^>^ data = line->Split(';');
+    switch (type) {
+    case T_LINK:
+        if (data->Length == 2) {
+            Link^ temp = gcnew Link();
+            temp->ISBN = data[0]->Trim();
+            temp->dis_code = data[1]->Trim();
+            node = temp;
         }
+        break;
+    case T_BOOK:
+        if (data->Length == 3) {
+            Book^ temp = gcnew Book();
+            temp->ISBN = data[0]->Trim();
+            temp->title = data[1]->Trim();
+            temp->author = data[2]->Trim();
+            node = temp;
+        }
+        break;
+    case T_SUBJECT:
+        if (data->Length == 3) {
+            Subject^ temp = gcnew Subject();
+            temp->dis_code = data[0]->Trim();
+            temp->name = data[1]->Trim();
+            temp->description = data[2]->Trim();
+            node = temp;
+        }
+        break;
+    default:
+        Console::WriteLine("Ошибка, выбран некорректный формат данных");
+        break;
+    }
+    return node;
+}
+void DataManager::AddNode(DataType type, Object^ node) {
+    switch (type) {
+    case T_LINK:
+        this->listLinks->Add(node);
+        Console::WriteLine("В список связей добавлена запись");
+        break;
+    case T_BOOK:
+        this->listBooks->Add(node);
+        Console::WriteLine("В список книг добавлена запись");
+        break;
+    case T_SUBJECT:
+        this->listSubjects->Add(node);
+        Console::WriteLine("В список дисциплин добавлена запись");
+        break;
+    default:
+        Console::WriteLine("Ошибка, выбран некорректный формат данных");
+        break;
     }
 }
-String^ SubjectManager::FindDisCodeByName(String^ name) {
-    for (int i = 0; i < this->subjects->Count; i++) {
-        Subject^ subject = dynamic_cast <Subject^> (this->subjects[i]);
-        if (subject != nullptr && subject->name == name) {
-            return subject->dis_code;
+void DataManager::DeleteNode(DataType type, Object^ node) {
+    Link^ t_link = nullptr;
+    Book^ t_book = nullptr;
+    Subject^ t_subj = nullptr;
+    int del_count = 0;
+    switch (type) {
+    case T_LINK:
+        t_link = dynamic_cast <Link^> (node);
+        for (int i = 0; i < this->listLinks->Count; i++) {
+            Link^ link = dynamic_cast <Link^> (this->listLinks[i]);
+            if (t_link->ISBN == link->ISBN && t_link->dis_code == link->dis_code) {
+                this->listLinks->RemoveAt(i);
+                break;
+            }
         }
+        Console::WriteLine("Из списка связей удалена запись");
+        break;
+    case T_BOOK:
+        t_book = dynamic_cast<Book^>(node);
+        for (int i = 0; i < this->listBooks->Count; i++) {
+            Book^ book = dynamic_cast <Book^> (this->listBooks[i]);
+            if (t_book->ISBN == book->ISBN) {
+                for (int j = 0; j < this->listLinks->Count; j++) {
+                    Link^ link = dynamic_cast <Link^> (this->listLinks[j]);
+                    if (link->ISBN == t_book->ISBN) {
+                        this->listLinks->RemoveAt(j);
+                        del_count++;
+                    }
+                }
+                this->listBooks->RemoveAt(i);
+                break;
+            }
+        }
+        Console::WriteLine("Из списка книг удалена запись");
+        if (del_count > 0) {
+            Console::WriteLine("Вслед удалено " + del_count + " записей из списка связей");
+        }
+        break;
+    case T_SUBJECT:
+        t_subj = dynamic_cast<Subject^>(node);
+        for (int i = 0; i < this->listSubjects->Count; i++) {
+            Subject^ subj = dynamic_cast <Subject^> (this->listSubjects[i]);
+            if (t_subj->dis_code == subj->dis_code) {
+                for (int j = 0; j < this->listLinks->Count; j++) {
+                    Link^ link = dynamic_cast <Link^> (this->listLinks[j]);
+                    if (link->dis_code == t_subj->dis_code) {
+                        this->listLinks->RemoveAt(j);
+                        del_count++;
+                    }
+                }
+                this->listSubjects->RemoveAt(i);
+                break;
+            }
+        }
+        Console::WriteLine("Из списка дисциплин удалена запись");
+        if (del_count > 0) {
+            Console::WriteLine("Вслед удалено " + del_count + " записей из списка связей");
+        }
+        break;
+    default:
+        Console::WriteLine("Ошибка, выбран некорректный формат данных");
+        break;
     }
-    return nullptr;
+}
+List<Object^>^ DataManager::FindNodes(DataType type, String^ line) {
+    int find_count = 0;
+    List<Object^>^ list = gcnew List<Object^>();
+    switch (type) {
+    case T_LINK:
+        for each (Link^ link in (this->listLinks)) {
+            if (link->ISBN->ToLower()->Contains(line) || link->dis_code->ToLower()->Contains(line)) {
+                list->Add(link);
+            }
+        }
+        break;
+    case T_BOOK:
+        for each (Book^ book in (this->listBooks)) {
+            if (book->ISBN->ToLower()->Contains(line) || book->title->ToLower()->Contains(line) || book->author->ToLower()->ToLower()->Contains(line)) {
+                list->Add(book);
+            }
+        }
+        break;
+    case T_SUBJECT:
+        for each (Subject^ subj in (this->listSubjects)) {
+            if (subj->dis_code->ToLower()->Contains(line) || subj->name->ToLower()->Contains(line) || subj->description->ToLower()->Contains(line)) {
+                list->Add(subj);
+            }
+        }
+        break;
+    default:
+        Console::WriteLine("Ошибка, выбран некорректный формат данных");
+        break;
+    }
+    Console::WriteLine("Найдено " + find_count + " записей по заданной строке");
+    return list;
 }

@@ -166,7 +166,7 @@ Void MyForm::buttonAddNode_Click(System::Object^ sender, System::EventArgs^ e) {
 	String^ text2 = textBoxInputData2->Text;
 	String^ text3 = textBoxInputData3->Text;
 
-	switch (searchStatus) {
+	switch (searchStatus) 	{
 	case S_NOTHING:
 		break;
 	case S_LINK:

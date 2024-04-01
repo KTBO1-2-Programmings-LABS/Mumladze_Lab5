@@ -171,7 +171,7 @@ namespace MumladzeLab5 {
 			this->textBoxInputData1->Name = L"textBoxInputData1";
 			this->textBoxInputData1->Size = System::Drawing::Size(200, 22);
 			this->textBoxInputData1->TabIndex = 7;
-			this->textBoxInputData1->Enabled = false;
+			textBoxInputData1->Enabled = false;
 			// 
 			// labelInputData1
 			// 
@@ -188,7 +188,7 @@ namespace MumladzeLab5 {
 			this->textBoxInputData2->Name = L"textBoxInputData2";
 			this->textBoxInputData2->Size = System::Drawing::Size(200, 22);
 			this->textBoxInputData2->TabIndex = 9;
-			this->textBoxInputData2->Enabled = false;
+			textBoxInputData2->Enabled = false;
 			// 
 			// labelInputData2
 			// 
@@ -205,7 +205,7 @@ namespace MumladzeLab5 {
 			this->textBoxInputData3->Name = L"textBoxInputData3";
 			this->textBoxInputData3->Size = System::Drawing::Size(200, 22);
 			this->textBoxInputData3->TabIndex = 11;
-			this->textBoxInputData3->Enabled = false;
+			textBoxInputData3->Enabled = false;
 			// 
 			// labelInputData3
 			// 
