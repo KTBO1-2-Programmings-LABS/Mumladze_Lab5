@@ -120,10 +120,6 @@ Void MyForm::buttonSearchStart_Click(System::Object^ sender, System::EventArgs^ 
 	String^ text = textBoxSearch->Text->ToLower();
 
 	switch (searchStatus) {
-	case S_NOTHING:
-		MessageBox::Show("Ошибка - не выбрана категория поиска", "Ошибка", 
-						 MessageBoxButtons::OK, MessageBoxIcon::Error);
-		break;
 	case S_LINK:
 		finded = dm->FindNodes(T_LINK, text);
 		for each (Link^ link in finded) {
@@ -166,42 +162,64 @@ Void MyForm::buttonAddNode_Click(System::Object^ sender, System::EventArgs^ e) {
 	String^ text2 = textBoxInputData2->Text;
 	String^ text3 = textBoxInputData3->Text;
 
-	switch (searchStatus) {
-	case S_NOTHING:
-		break;
-	case S_LINK:
-		break;
-	case S_BOOK:
-		break;
-	case S_SUBJECT:
-		break;
-	default:
-		break;
-	}
-
-	if (!String::IsNullOrWhiteSpace(text1) && !String::IsNullOrWhiteSpace(text2) && !String::IsNullOrWhiteSpace(text3)) {
-		ListViewItem^ item = gcnew ListViewItem();
-		if (searchStatus == S_BOOK) {
-			// TODO
-		}
-		else if (searchStatus == S_SUBJECT) {
-			// TODO
-		}
-		else {
-			MessageBox::Show("Ошибка - не выбрана категория записи", "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
-			return;
-		}
-		item->Text = text1;
-		item->SubItems->Add(text2);
-		item->SubItems->Add(text3);
-		listViewData1->Items->Add(item);
-		textBoxInputData1->Text = "";
-		textBoxInputData2->Text = "";
-		textBoxInputData3->Text = "";
+	if (String::IsNullOrWhiteSpace(text1) || String::IsNullOrWhiteSpace(text2)) {
+		MessageBox::Show("Ошибка. Вы ввели не все данные, необходимые для записи в список.",
+						 "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
 	}
 	else {
-		MessageBox::Show("Ошибка. Вы ввели не все данные, необходимые для записи в список.",
-			"Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		ListViewItem^ item = gcnew ListViewItem();
+		item->Text = text1;
+		item->SubItems->Add(text2);
+		Link^ link = gcnew Link();
+		Book^ book = gcnew Book();
+		Subject^ subject = gcnew Subject();
+		Object^ node = nullptr;
+		switch (searchStatus) {
+		case S_LINK:
+			link->ISBN = text1;
+			link->dis_code = text2;
+			node = link;
+			dm->AddNode(T_LINK, node);
+			break;
+		case S_BOOK:
+			if (String::IsNullOrWhiteSpace(text3)) {
+				MessageBox::Show("Ошибка. Вы ввели не все данные, необходимые для записи в список.",
+								 "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+			else {
+				book->ISBN = text1;
+				book->title = text2;
+				book->author = text3;
+				node = book;
+				dm->AddNode(T_BOOK, node);
+				item->SubItems->Add(text3);
+			}
+			break;
+		case S_SUBJECT:
+			if (String::IsNullOrWhiteSpace(text3)) {
+				MessageBox::Show("Ошибка. Вы ввели не все данные, необходимые для записи в список.",
+								 "Ошибка", MessageBoxButtons::OK, MessageBoxIcon::Warning);
+			}
+			else {
+				subject->dis_code = text1;
+				subject->name = text2;
+				subject->description = text3;
+				node = subject;
+				dm->AddNode(T_SUBJECT, node);
+				item->SubItems->Add(text3);
+			}
+			break;
+		default:
+			MessageBox::Show("Ошибка - не выбрана категория записи", "Ошибка", 
+							 MessageBoxButtons::OK, MessageBoxIcon::Error);
+			return;
+		}
+		if (node) {
+			listViewData1->Items->Add(item);
+			textBoxInputData1->Text = "";
+			textBoxInputData2->Text = "";
+			textBoxInputData3->Text = "";
+		}
 	}
 }
 
@@ -211,17 +229,38 @@ Void MyForm::listViewData1_ItemSelectionChanged(Object^ sender, ListViewItemSele
 
 Void MyForm::buttonRemoveNode_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (listViewData1->SelectedItems->Count > 0) {
+		Link^ link = gcnew Link();
+		Book^ book = gcnew Book();
+		Subject^ subject = gcnew Subject();
+		Object^ node = nullptr;
 		List<ListViewItem^>^ itemsToRemove = gcnew List<ListViewItem^>();
+
 		for each (ListViewItem^ item in listViewData1->SelectedItems) {
 			itemsToRemove->Add(item);
 		}
 		for each (ListViewItem^ item in itemsToRemove) {
 			listViewData1->Items->Remove(item);
-			if (searchStatus == S_BOOK) {
-				// TODO
-			}
-			else if (searchStatus == S_SUBJECT) {
-				// TODO
+			switch (searchStatus) {
+			case S_LINK:
+				link->ISBN = item->Text;
+				link->dis_code = item->SubItems[0]->Text;
+				node = link;
+				dm->DeleteNode(T_LINK, node);
+				break;
+			case S_BOOK:
+				book->ISBN = item->Text;
+				node = book;
+				dm->DeleteNode(T_BOOK, node);
+				break;
+			case S_SUBJECT:
+				subject->dis_code = item->Text;
+				node = book;
+				dm->DeleteNode(T_BOOK, node);
+				break;
+			default:
+				MessageBox::Show("Ошибка - не выбрана категория удаления", "Ошибка",
+								 MessageBoxButtons::OK, MessageBoxIcon::Error);
+				break;
 			}
 		}
 	}

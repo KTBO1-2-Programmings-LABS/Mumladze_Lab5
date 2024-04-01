@@ -3,7 +3,6 @@
 #include "DataManager.h"
 
 enum SearchStatus {
-	S_NOTHING = -1,
 	S_LINK = 0,
 	S_BOOK = 1,
 	S_SUBJECT = 2
@@ -266,7 +265,7 @@ namespace MumladzeLab5 {
 #pragma endregion
 	private: bool IsChangeSearchButtonClicked = false;
 		     bool IsDataInitialized = false;
-		     SearchStatus searchStatus = S_NOTHING;
+		     SearchStatus searchStatus = S_BOOK;
 
 	private: Void initializationData();
 	private: Void buttonSearchLink_Click(System::Object^ sender, System::EventArgs^ e);

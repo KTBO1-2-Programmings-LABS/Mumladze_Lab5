@@ -206,6 +206,7 @@ List<Object^>^ DataManager::FindNodes(DataType type, String^ line) {
         for each (Link^ link in (this->listLinks)) {
             if (link->ISBN->ToLower()->Contains(line) || link->dis_code->ToLower()->Contains(line)) {
                 list->Add(link);
+                find_count++;
             }
         }
         break;
@@ -213,6 +214,7 @@ List<Object^>^ DataManager::FindNodes(DataType type, String^ line) {
         for each (Book^ book in (this->listBooks)) {
             if (book->ISBN->ToLower()->Contains(line) || book->title->ToLower()->Contains(line) || book->author->ToLower()->ToLower()->Contains(line)) {
                 list->Add(book);
+                find_count++;
             }
         }
         break;
@@ -220,6 +222,7 @@ List<Object^>^ DataManager::FindNodes(DataType type, String^ line) {
         for each (Subject^ subj in (this->listSubjects)) {
             if (subj->dis_code->ToLower()->Contains(line) || subj->name->ToLower()->Contains(line) || subj->description->ToLower()->Contains(line)) {
                 list->Add(subj);
+                find_count++;
             }
         }
         break;
