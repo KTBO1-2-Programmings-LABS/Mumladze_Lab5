@@ -12,10 +12,11 @@ MyForm::~MyForm() {
 	if (components) {
 		delete components;
 	}
-	if (!dm) {
+	if (IsDataInitialized) {
 		this->dm->WriteDataFiles();
 		delete this->dm;
 		dm = nullptr;
+		IsDataInitialized = false;
 	}
 }
 
